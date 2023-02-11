@@ -20,17 +20,17 @@ void app_main(void)
     while (1) {
         lcd_clear();
         lcd_put_cur(0, 0);
-        lcd_send_string("Teste 1234", 100);
+        lcd_send_string("ASfascuinsc", 100);
 
         lcd_put_cur(1, 0);
-        lcd_send_string("ASFoancaopsincas", 100);
+        lcd_send_string("afinasc assac", 100);
 
         lcd_clear();
         lcd_put_cur(0, 0);
-        lcd_send_string("AAAAAAAAA", 100);
+        lcd_send_string("gsdinasc dgsv", 100);
 
         lcd_put_cur(1, 0);
-        lcd_send_string("12421.123124", 100);
+        lcd_send_string("oidnvs aocpm asc", 100);
     }
 #endif
 }

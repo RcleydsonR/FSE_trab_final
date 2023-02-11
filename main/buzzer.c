@@ -7,6 +7,7 @@
 #include "esp_log.h"
 
 #include "buzzer.h"
+#include "morse.h"
 #include "gpio_setup.h"
 
 void buzzer_init()
@@ -62,4 +63,23 @@ void space()
     set_duty(0);
     ESP_LOGI("BUZZER", "  acionado");
     vTaskDelay(SPACE_DELAY / portTICK_PERIOD_MS);
+}
+
+void convert_morse_to_sound(char *morse)
+{
+    // char *morse = convert_string_to_morse(str);
+    while (*morse) {
+        switch (*morse++)
+        {
+        case '.':
+            dot();
+            break;
+        case '-':
+            dash();
+            break;
+        default:
+            space();
+            break;
+        }
+    }
 }

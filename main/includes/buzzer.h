@@ -10,5 +10,6 @@ void buzzer_init();
 void dot();
 void dash();
 void space();
+void convert_morse_to_sound(char *str);
 
 #endif /* BUZZER_H_ */

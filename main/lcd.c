@@ -6,6 +6,8 @@
 
 #include "i2c.h"
 #include "lcd.h"
+#include "morse.h"
+#include "buzzer.h"
 
 #define TAG "LCD"
 
@@ -91,7 +93,9 @@ void lcd_put_cur(int row, int col)
 void lcd_send_string(char *str, int sleep_time)
 {
 	while (*str) {
-		lcd_send_data (*str++);
+		char c = *str++;
+		lcd_send_data (c);
+		convert_morse_to_sound(convert_char_to_morse(c));
 		vTaskDelay(sleep_time / portTICK_PERIOD_MS);
 	}
 }
