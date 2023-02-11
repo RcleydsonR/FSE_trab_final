@@ -7,7 +7,7 @@
 #include "i2c.h"
 #include "lcd.h"
 
-static char *TAG = "LCD";
+#define TAG "LCD"
 
 void lcd_send_cmd(char cmd)
 {
@@ -71,7 +71,6 @@ void lcd_init()
 	vTaskDelay(125 / portTICK_PERIOD_MS);
 	lcd_send_cmd (0x0C);
 	vTaskDelay(250 / portTICK_PERIOD_MS);
-    ESP_LOGI(TAG, "LCD inicializado com sucesso");
 }
 
 void lcd_put_cur(int row, int col)

@@ -9,14 +9,11 @@
 #include "dht11.h"
 #include "temperature_sensor.h"
 
-#define TEMP_DHT11_GPIO 5
-#define TAG "TEMPERATURE SENSOR (DHT11)"
+#define TAG "DHT11"
 
 void read_temperature(void *params)
 {
-    DHT11_init(TEMP_DHT11_GPIO);
     struct dht11_reading dht;
-
     while (1)
     {
         dht = DHT11_read();

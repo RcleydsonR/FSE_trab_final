@@ -4,8 +4,6 @@
 
 #include "i2c.h"
 
-static char *TAG = "I2C";
-
 void i2c_init() {
     i2c_config_t i2c_conf = {
         .mode = I2C_MODE_MASTER,
@@ -17,6 +15,5 @@ void i2c_init() {
     };
 
     ESP_ERROR_CHECK(i2c_param_config(I2C_HOST, &i2c_conf));
-    ESP_ERROR_CHECK(i2c_driver_install(I2C_HOST, I2C_MODE_MASTER, 0, 0, 0));
-    ESP_LOGI(TAG, "I2C inicializado com sucesso");
+    i2c_driver_install(I2C_HOST, I2C_MODE_MASTER, 0, 0, 0);
 }

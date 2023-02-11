@@ -4,6 +4,7 @@
 #include "esp_system.h"
 #include "esp_log.h"
 
+#include "init.h"
 #include "temperature_sensor.h"
 #include "i2c.h"
 #include "lcd.h"
@@ -13,10 +14,8 @@
 void app_main(void)
 {
 #if CONFIG_ESP_MODE_SENDER
-    ESP_LOGI(TAG, "Iniciando leitura de temperatura");
     // xTaskCreate(&read_temperature, "Temperatura DHT11", 2048, NULL, 1, NULL);
-    i2c_init();
-    lcd_init();
+    init_components();
 
     while (1) {
         lcd_clear();
