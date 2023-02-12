@@ -8,6 +8,8 @@
 
 #define TAG "GPIO_SETUP"
 
+int led_state = 0;
+
 void pinMode(gpio_num_t pin, int mode){
     gpio_config_t io_conf = {};
     switch (mode)

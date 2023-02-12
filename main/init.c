@@ -42,7 +42,7 @@ void init_components()
     // buzzer_init();
     // ESP_LOGI("BUZZER", "Buzzer Inicializado com sucesso");
 
-    pinMode(2, GPIO_OUTPUT);
+    pinMode(ESP_LED, GPIO_OUTPUT);
 
     // Exemplo de string
     // while (1) {

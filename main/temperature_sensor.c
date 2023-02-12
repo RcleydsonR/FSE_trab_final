@@ -23,10 +23,12 @@ void read_temperature(void *params)
         dht = DHT11_read();
 
         if (dht.status == DHT11_OK) {
-            sprintf(message, "{\"Temperatura\": %d, \"Humidade\": %d}", dht.temperature, dht.humidity);
-            ESP_LOGI(TAG, "{\"Temperatura\": %d, \"Humidade\": %d}", dht.temperature, dht.humidity);
-            if(mqttSemaphoreConn)
+            sprintf(message, "{\"Temperatura\": %d, \"Umidade\": %d}", dht.temperature, dht.humidity);
+            ESP_LOGI(TAG, "{\"Temperatura\": %d, \"Umidade\": %d}", dht.temperature, dht.humidity);
+
+            if(mqttSemaphoreConn){
                 mqtt_send_message("v1/devices/me/telemetry", message);
+            }
         }
         else
             ESP_LOGE(TAG, "Erro na leitura do sensor de temperatura");
