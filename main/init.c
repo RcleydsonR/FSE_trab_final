@@ -13,10 +13,10 @@
 #include "wifi.h"
 
 SemaphoreHandle_t wifiSemaphoreConn, mqttSemaphoreConn;
-  ultrasonic_sensor_t sensor = {
-      .trigger_pin = TRIGGER_GPIO,
-      .echo_pin = ECHO_GPIO
-  };
+ultrasonic_sensor_t sensor = {
+    .trigger_pin = TRIGGER_GPIO,
+    .echo_pin = ECHO_GPIO
+};
 
 void init_components()
 {
@@ -42,7 +42,7 @@ void init_components()
     // buzzer_init();
     // ESP_LOGI("BUZZER", "Buzzer Inicializado com sucesso");
 
-    pinMode(ESP_LED, GPIO_OUTPUT);
+    pinMode(ESP_LED_GPIO, GPIO_OUTPUT);
 
     // Exemplo de string
     // while (1) {

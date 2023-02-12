@@ -3,7 +3,7 @@
 #include "esp_log.h"
 
 #include "mqtt.h"
-#include "cjson.h"
+#include "cJSON.h"
 #include "gpio_setup.h"
 
 void handle_broker_message(char * json_message)
@@ -20,7 +20,7 @@ void handle_broker_message(char * json_message)
 
         sprintf(led, "{\"led\": %d}", led_state);
 
-        digitalWrite(ESP_LED, led_state);
+        digitalWrite(ESP_LED_GPIO, led_state);
         mqtt_send_message("v1/devices/me/attributes", led);
     }
 }
