@@ -14,6 +14,9 @@ static char morse_table[36][5] = {
 
 char* convert_char_to_morse(char c)
 {
+    if (c == ' ')
+        return "/";
+
     int morse_pos = c;
     morse_pos = morse_pos > 90 ? morse_pos - (32) : morse_pos;
     morse_pos -= 65;
@@ -28,12 +31,7 @@ char* convert_string_to_morse(char *str)
 
     while(*str) {
         char c = *str++;
-        if (c == ' ')
-            strcat(result, "/");
-        else {
-            strcat(result, convert_char_to_morse(c));
-        }
-        
+        strcat(result, convert_char_to_morse(c));
         if (*str)
             strcat(result, " ");
     }

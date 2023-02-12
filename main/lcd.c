@@ -96,6 +96,8 @@ void lcd_send_string(char *str, int sleep_time)
 		char c = *str++;
 		lcd_send_data (c);
 		convert_morse_to_sound(convert_char_to_morse(c));
+        if (*str)
+			convert_morse_to_sound(" ");
 		vTaskDelay(sleep_time / portTICK_PERIOD_MS);
 	}
 }
