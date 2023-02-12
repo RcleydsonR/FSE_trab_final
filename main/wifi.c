@@ -24,6 +24,8 @@
 
 #define TAG "WIFI"
 
+extern SemaphoreHandle_t wifiSemaphoreConn;
+
 static EventGroupHandle_t s_wifi_event_group;
 
 static int s_retry_num = 0;

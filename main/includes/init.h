@@ -3,7 +3,6 @@
 #include "freertos/semphr.h"
 #include <ultrasonic.h>
 
-extern SemaphoreHandle_t wifiSemaphoreConn, mqttSemaphoreConn;
 extern ultrasonic_sensor_t sensor;
 
 void init_components();

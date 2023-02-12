@@ -1,8 +1,11 @@
+#include "string.h"
+
 #include "esp_log.h"
 
 #include "driver/i2c.h"
 
 #include "freertos/task.h"
+#include "freertos/queue.h"
 
 #include "i2c.h"
 #include "lcd.h"
@@ -10,6 +13,8 @@
 #include "buzzer.h"
 
 #define TAG "LCD"
+
+extern QueueHandle_t lcdQueue;
 
 void lcd_send_cmd(char cmd)
 {
@@ -106,4 +111,20 @@ void lcd_clear()
 {
 	lcd_send_cmd (0x01);
 	vTaskDelay(625 / portTICK_PERIOD_MS);
+}
+
+void lcd_morse(void *params)
+{
+	int lcd_line = 0;
+	char lcd_str[16];
+	while (xQueueReceive(lcdQueue, &lcd_str, portMAX_DELAY)) {
+		ESP_LOGI(TAG, "Mensagem recebida: %s", lcd_str);
+		if (lcd_line > 1) {
+			lcd_clear();
+			lcd_line = 0;
+		}
+
+        lcd_put_cur(lcd_line++, 0);
+        lcd_send_string(lcd_str, 0);
+	}
 }

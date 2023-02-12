@@ -2,9 +2,9 @@
 #define BUZZER_H_
 
 #define BUZZER_GPIO 33
-#define DOT_DELAY 70
-#define DASH_DELAY 150
-#define SPACE_DELAY 200
+#define DOT_DELAY 140
+#define DASH_DELAY 300
+#define SPACE_DELAY 400
 
 void buzzer_init();
 void dot();

@@ -23,6 +23,8 @@
 
 #define TAG "MQTT"
 
+extern SemaphoreHandle_t mqttSemaphoreConn, wifiSemaphoreConn;
+
 esp_mqtt_client_handle_t client;
 
 static void log_error_if_nonzero(const char *message, int error_code)

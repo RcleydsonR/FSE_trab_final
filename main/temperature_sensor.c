@@ -5,6 +5,7 @@
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/semphr.h"
 
 #include "dht11.h"
 #include "temperature_sensor.h"
@@ -12,6 +13,8 @@
 #include "init.h"
 
 #define TAG "DHT11"
+
+extern SemaphoreHandle_t mqttSemaphoreConn;
 
 void read_temperature(void *params)
 {

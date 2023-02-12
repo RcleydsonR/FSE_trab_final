@@ -1,5 +1,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/queue.h"
 #include "nvs_flash.h"
 
 #include "esp_log.h"
@@ -12,6 +13,7 @@
 #include "gpio_setup.h"
 #include "wifi.h"
 
+QueueHandle_t lcdQueue;
 SemaphoreHandle_t wifiSemaphoreConn, mqttSemaphoreConn;
 ultrasonic_sensor_t sensor = {
     .trigger_pin = TRIGGER_GPIO,
@@ -33,25 +35,19 @@ void init_components()
 
     wifi_start();
 
-    // i2c_init();
-    // ESP_LOGI("I2C", "I2C Inicializado com sucesso");
-    // lcd_init();
-    // ESP_LOGI("LCD", "LCD Inicializado com sucesso");
-    DHT11_init(DHT11_GPIO);
-    ESP_LOGI("DHT11", "DHT11 Inicializado com sucesso");
-    // buzzer_init();
-    // ESP_LOGI("BUZZER", "Buzzer Inicializado com sucesso");
+    lcdQueue = xQueueCreate(4, 16);
+
+    i2c_init();
+    ESP_LOGI("I2C", "I2C Inicializado com sucesso");
+    lcd_init();
+    ESP_LOGI("LCD", "LCD Inicializado com sucesso");
+    // DHT11_init(DHT11_GPIO);
+    // ESP_LOGI("DHT11", "DHT11 Inicializado com sucesso");
+    buzzer_init();
+    ESP_LOGI("BUZZER", "Buzzer Inicializado com sucesso");
 
     pinMode(ESP_LED_GPIO, GPIO_OUTPUT);
 
-    // Exemplo de string
-    // while (1) {
-    //     digitalWrite(2, 1);
-    //     convert_morse_to_sound(convert_string_to_morse("ascaiskjcnasc"));
-    //     digitalWrite(2, 0);
-    //     vTaskDelay(1000 / portTICK_PERIOD_MS);
-    // }
-
-    ultrasonic_init(&sensor);
-    ESP_LOGI("HC-SR04", "SR04 Inicializado com sucesso");
+    // ultrasonic_init(&sensor);
+    // ESP_LOGI("HC-SR04", "SR04 Inicializado com sucesso");
 }

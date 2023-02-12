@@ -1,5 +1,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/semphr.h"
 
 #include "driver/ledc.h"
 
@@ -8,7 +9,10 @@
 
 #include "buzzer.h"
 #include "morse.h"
+#include "mqtt.h"
 #include "gpio_setup.h"
+
+extern SemaphoreHandle_t mqttSemaphoreConn;
 
 void buzzer_init()
 {
@@ -38,6 +42,12 @@ void set_duty(int duty_value)
 {
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty_value);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+    
+    char message[80];
+    sprintf(message, "{\"Buzzer\": %d}", duty_value == 0 ? 0 : 1);
+    if(mqttSemaphoreConn){
+        mqtt_send_message("v1/devices/me/telemetry", message);
+    }
 }
 
 void dot()
