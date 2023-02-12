@@ -6,6 +6,7 @@
 
 #include "init.h"
 #include "temperature_sensor.h"
+#include "ultrasonic_sensor.h"
 #include "i2c.h"
 #include "lcd.h"
 #include "mqtt.h"
@@ -19,6 +20,7 @@ void app_main(void)
     init_components();
 
     xTaskCreate(&read_temperature, "Temperatura DHT11", 2048, NULL, 1, NULL);
+    xTaskCreate(read_distance, "ultrasonic HC-SR04", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
     xTaskCreate(&wifi_connected, "Conexao wifi", 2048, NULL, 1, NULL);
 
     // while (1) {

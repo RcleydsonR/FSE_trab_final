@@ -13,6 +13,10 @@
 #include "wifi.h"
 
 SemaphoreHandle_t wifiSemaphoreConn, mqttSemaphoreConn;
+  ultrasonic_sensor_t sensor = {
+      .trigger_pin = TRIGGER_GPIO,
+      .echo_pin = ECHO_GPIO
+  };
 
 void init_components()
 {
@@ -47,4 +51,7 @@ void init_components()
     //     digitalWrite(2, 0);
     //     vTaskDelay(1000 / portTICK_PERIOD_MS);
     // }
+
+    ultrasonic_init(&sensor);
+    ESP_LOGI("HC-SR04", "SR04 Inicializado com sucesso");
 }
