@@ -42,7 +42,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
         xSemaphoreGive(mqttSemaphoreConn);
-        // msg_id = esp_mqtt_client_subscribe(client, "dispositivos/#", 0);
+        esp_mqtt_client_subscribe(client, "v1/devices/me/rpc/request/+", 0);
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
@@ -83,8 +83,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 void mqtt_start()
 {
     esp_mqtt_client_config_t mqtt_config = {
-        .broker.address.uri = "mqtt://test.mosquitto.org",
-        
+        .broker.address.uri = "mqtt://164.41.98.25",
+        .credentials.username = "8oeUGOP8G1WUbsqnws0B"
     };
     client = esp_mqtt_client_init(&mqtt_config);
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
