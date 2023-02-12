@@ -2,17 +2,22 @@
 #define _GPIO_SETUP
 
 #include "driver/gpio.h"
+#include "esp_adc/adc_oneshot.h"
 
 #define GPIO_OUTPUT          0
 #define GPIO_INPUT           1
 #define GPIO_INPUT_PULLUP    2
 #define GPIO_INPUT_PULLDOWN  3
-
-#define ESP_LED 2
+#define GPIO_ANALOG          4
 
 extern int led_state;
+
+void adc_init();
+void adc_config_pin(adc_channel_t channel);
+void adc_deinit();
 void pinMode(gpio_num_t pin, int mode);
 void digitalWrite(gpio_num_t pin, uint32_t level);
 uint32_t digitalRead(gpio_num_t pin);
+int analogRead(adc_channel_t channel);
 
 #endif
