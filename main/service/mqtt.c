@@ -22,6 +22,8 @@
 #include "parser.h"
 
 #define TAG "MQTT"
+#define MQTT_BROKER_URI CONFIG_MQTT_BROKER_URI
+#define MQTT_AUTH_TOKEN CONFIG_MQTT_AUTH_TOKEN
 
 extern SemaphoreHandle_t mqttSemaphoreConn, wifiSemaphoreConn;
 
@@ -84,8 +86,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 void mqtt_start()
 {
     esp_mqtt_client_config_t mqtt_config = {
-        .broker.address.uri = "mqtt://164.41.98.25",
-        .credentials.username = "8oeUGOP8G1WUbsqnws0B"
+        .broker.address.uri = MQTT_BROKER_URI,
+        .credentials.username = MQTT_AUTH_TOKEN
     };
     client = esp_mqtt_client_init(&mqtt_config);
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);

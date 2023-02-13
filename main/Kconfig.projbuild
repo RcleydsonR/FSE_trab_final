@@ -46,3 +46,17 @@ menu "Modo de Energia"
             bool "Modo de funcionamento (Low power)"
     endchoice
 endmenu
+
+menu "Configuração MQTT"
+    config MQTT_BROKER_URI
+        string "MQTT broker uri"
+        default "mqtt://164.41.98.25"
+        help
+            Endereço uri do MQTT.
+
+    config MQTT_AUTH_TOKEN
+        string "MQTT Auth Token"
+        default "8oeUGOP8G1WUbsqnws0B"
+        help
+            Token de autenticação do MQTT
+endmenu
