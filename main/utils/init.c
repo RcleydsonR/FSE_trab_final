@@ -3,6 +3,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
+#include "freertos/semphr.h"
 
 #include "esp32/rom/uart.h"
 #include "driver/rtc_io.h"
@@ -10,7 +11,6 @@
 #include "esp_sleep.h"
 #include "esp_log.h"
 #include "esp_timer.h"
-#include "freertos/semphr.h"
 
 #include "i2c.h"
 #include "lcd.h"
@@ -21,16 +21,16 @@
 #include "gpio_setup.h"
 #include "wifi.h"
 
+#define TAG "SENSOR_INIT"
+#define LOW_MODE_TAG "LOW_MODE"
+#define SECOND_IN_MICROSECOND 1000000
+
 QueueHandle_t lcdQueue;
 SemaphoreHandle_t wifiSemaphoreConn, mqttSemaphoreConn;
 ultrasonic_sensor_t sensor = {
     .trigger_pin = TRIGGER_GPIO,
     .echo_pin = ECHO_GPIO
 };
-
-#define TAG "SENSOR_INIT"
-#define LOW_MODE_TAG "LOW_MODE"
-#define SECOND_IN_MICROSECOND 1000000
 
 void init_energy_mode_components()
 {
@@ -41,22 +41,25 @@ void init_energy_mode_components()
     wifiSemaphoreConn = xSemaphoreCreateBinary();
 
     wifi_start();
+    pinMode(ESP_LED_GPIO, GPIO_OUTPUT);
 
+#if CONFIG_ESP_MODE_CAR
+    ultrasonic_init(&sensor);
+    ESP_LOGI("HC-SR04", "SR04 Inicializado com sucesso");
+    buzzer_init(21, 500);
+    ESP_LOGI(TAG, "Buzzer Inicializado com sucesso");
+#elif CONFIG_ESP_MODE_MORSE
     lcdQueue = xQueueCreate(4, 16);
-
     i2c_init();
     ESP_LOGI(TAG, "I2C Inicializado com sucesso");
     lcd_init();
     ESP_LOGI(TAG, "LCD Inicializado com sucesso");
-    // DHT11_init(DHT11_GPIO);
-    // ESP_LOGI("DHT11", "DHT11 Inicializado com sucesso");
-    buzzer_init();
+    buzzer_init(33, 400);
     ESP_LOGI(TAG, "Buzzer Inicializado com sucesso");
-
-    pinMode(ESP_LED_GPIO, GPIO_OUTPUT);
-
-    ultrasonic_init(&sensor);
-    ESP_LOGI("HC-SR04", "SR04 Inicializado com sucesso");
+#elif CONFIG_ESP_MODE_TEMPERATURE
+    DHT11_init(DHT11_GPIO);
+    ESP_LOGI("DHT11", "DHT11 Inicializado com sucesso");
+#endif
 }
 
 void init_battery_mode()

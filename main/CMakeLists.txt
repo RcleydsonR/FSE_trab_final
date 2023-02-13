@@ -1,2 +1,21 @@
-idf_component_register(SRCS "nvs.c" "joystick.c" "ultrasonic_sensor.c" "mqtt.c" "wifi.c" "morse.c" "buzzer.c" "init.c" "lcd.c" "i2c.c" "main.c" "temperature_sensor.c" "gpio_setup.c" "parser.c"
-                    INCLUDE_DIRS "includes")
+set(srcs
+    "sensor/joystick.c"
+    "sensor/ultrasonic_sensor.c"
+    "sensor/buzzer.c"
+    "sensor/lcd.c"
+    "sensor/i2c.c"
+    "sensor/temperature_sensor.c"
+    "service/mqtt.c"
+    "service/wifi.c"
+    "service/nvs.c"
+    "utils/morse.c"
+    "utils/init.c"
+    "utils/gpio_setup.c"
+    "utils/parser.c"
+    "main.c"
+)
+
+idf_component_register(
+    SRCS "${srcs}"
+    INCLUDE_DIRS "includes"
+)

@@ -21,7 +21,7 @@ void read_joystick(void *params)
     adc_config_pin(JOYSTICK_X); 
     adc_config_pin(JOYSTICK_Y);
 
-    pinMode(JOYSTICK_BOTAO, GPIO_INPUT_PULLDOWN);
+    pinMode(JOYSTICK_BOTAO, GPIO_INPUT_PULLUP);
     
     while (true)
     {

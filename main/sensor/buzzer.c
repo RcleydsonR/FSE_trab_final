@@ -14,14 +14,14 @@
 
 extern SemaphoreHandle_t mqttSemaphoreConn;
 
-void buzzer_init()
+void buzzer_init(int gpio_pin, int buzzer_frequency)
 {
-    pinMode(33, GPIO_OUTPUT);
+    pinMode(gpio_pin, GPIO_OUTPUT);
     ledc_timer_config_t buzzer_timer = {
         .speed_mode       = LEDC_LOW_SPEED_MODE,
         .timer_num        = LEDC_TIMER_0,
         .duty_resolution  = LEDC_TIMER_13_BIT,
-        .freq_hz          = 400,
+        .freq_hz          = buzzer_frequency,
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&buzzer_timer));
@@ -31,7 +31,7 @@ void buzzer_init()
         .channel        = LEDC_CHANNEL_0,
         .timer_sel      = LEDC_TIMER_0,
         .intr_type      = LEDC_INTR_DISABLE,
-        .gpio_num       = BUZZER_GPIO,
+        .gpio_num       = gpio_pin,
         .duty           = 0,
         .hpoint         = 0
     };

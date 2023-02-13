@@ -2,12 +2,14 @@ menu "Sistema Embarcado"
 
     choice ESP_MODE
         bool "Selecione o modo de operação da ESP"
-        default ESP_MODE_RECEIVER
+        default ESP_MODE_TEMPERATURE
         
-        config ESP_MODE_SENDER
-            bool "Modo de operação para envio"
-        config ESP_MODE_RECEIVER
-            bool "Modo de operação para escuta"
+        config ESP_MODE_CAR
+            bool "Modo de operação de sensor de ré carro"
+        config ESP_MODE_MORSE
+            bool "Modo de operação de código morse"
+        config ESP_MODE_TEMPERATURE
+            bool "Modo de operação de temperatura"
     endchoice
 endmenu
 
