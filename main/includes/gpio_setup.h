@@ -10,6 +10,7 @@
 #define GPIO_INPUT_PULLDOWN  3
 #define GPIO_ANALOG          4
 
+#define ESP_BUTTON_GPIO 0
 #define DHT11_GPIO 5
 #define ESP_LED_GPIO 2
 #define TRIGGER_GPIO 18

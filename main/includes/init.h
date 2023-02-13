@@ -5,6 +5,7 @@
 
 extern ultrasonic_sensor_t sensor;
 
-void init_components();
+void init_energy_mode_components();
+void init_battery_mode();
 
 #endif /* INIT_H_ */

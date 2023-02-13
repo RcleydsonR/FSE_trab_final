@@ -31,3 +31,16 @@ menu "Configuração do Wifi"
         help
             Configure o valor máximo de tentativas de conexão.
 endmenu
+
+menu "Modo de Energia"
+
+    choice ESP_ENERGY_OR_LOW_POWER_MODE
+        bool "Selecione o modo de energia da placa (energia ou low power)"
+        default ESP_ENERGY_MODE
+        
+        config ESP_ENERGY_MODE
+            bool "Modo de funcionamento (Energia)"
+        config ESP_LOW_POWER_MODE
+            bool "Modo de funcionamento (Low power)"
+    endchoice
+endmenu
