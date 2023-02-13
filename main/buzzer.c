@@ -38,13 +38,13 @@ void buzzer_init()
     ESP_ERROR_CHECK(ledc_channel_config(&buzzer_channel));
 }
 
-void set_duty(int duty_value)
+void set_duty(int duty_value, char * telemetry_name)
 {
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty_value);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
     
     char message[80];
-    sprintf(message, "{\"Buzzer\": %d}", duty_value == 0 ? 0 : 1);
+    sprintf(message, "{\"%s\": %d}", telemetry_name, duty_value == 0 ? 0 : 1);
     if(mqttSemaphoreConn){
         mqtt_send_message("v1/devices/me/telemetry", message);
     }
@@ -52,25 +52,25 @@ void set_duty(int duty_value)
 
 void dot()
 {
-    set_duty(5000);
+    set_duty(5000, TELEMETRY_NAME);
     ESP_LOGI("BUZZER", ". acionado");
     vTaskDelay(DOT_DELAY / portTICK_PERIOD_MS);
-    set_duty(0);
+    set_duty(0, TELEMETRY_NAME);
     vTaskDelay(50 / portTICK_PERIOD_MS);
 }
 
 void dash()
 {
-    set_duty(5000);
+    set_duty(5000, TELEMETRY_NAME);
     ESP_LOGI("BUZZER", "- acionado");
     vTaskDelay(DASH_DELAY / portTICK_PERIOD_MS);
-    set_duty(0);
+    set_duty(0, TELEMETRY_NAME);
     vTaskDelay(50 / portTICK_PERIOD_MS);
 }
 
 void space()
 {
-    set_duty(0);
+    set_duty(0, TELEMETRY_NAME);
     ESP_LOGI("BUZZER", "  acionado");
     vTaskDelay(SPACE_DELAY / portTICK_PERIOD_MS);
 }

@@ -9,8 +9,11 @@
 #include "mqtt.h"
 #include "cJSON.h"
 #include "gpio_setup.h"
+#include "joystick.h"
 
 extern QueueHandle_t lcdQueue;
+extern int reverse_gear;
+extern int led_state;
 
 void handle_broker_message(char * json_message)
 {
@@ -34,5 +37,13 @@ void handle_broker_message(char * json_message)
         char *str= cJSON_GetObjectItem(params, "lcd_str")->valuestring;
         if (strlen(str) <= 16)
             xQueueSend(lcdQueue, str, portMAX_DELAY);
+    }
+    else if (strcmp(command, "acionarRe") == 0) {
+        char reverse_gear_led[40];
+        reverse_gear = !reverse_gear;
+
+        sprintf(reverse_gear_led, "{\"reverse_gear_led\": %d}", reverse_gear);
+
+        mqtt_send_message("v1/devices/me/attributes", reverse_gear_led);
     }
 }
