@@ -1,10 +1,12 @@
 #include <sys/time.h>
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
-#include "nvs_flash.h"
+
 #include "esp32/rom/uart.h"
 #include "driver/rtc_io.h"
+
 #include "esp_sleep.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -13,6 +15,7 @@
 #include "lcd.h"
 #include "dht11.h"
 #include "init.h"
+#include "nvs.h"
 #include "buzzer.h"
 #include "gpio_setup.h"
 #include "wifi.h"
@@ -30,14 +33,9 @@ ultrasonic_sensor_t sensor = {
 
 void init_energy_mode_components()
 {
-    // Inicializa o NVS
-    esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-      ESP_ERROR_CHECK(nvs_flash_erase());
-      ret = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK(ret);
-    ESP_LOGI(TAG, "NVS_FLASH Inicializado com sucesso");
+    nvs_init();
+    ESP_LOGI("NVS", "NVS Inicializado com sucesso");
+
     mqttSemaphoreConn = xSemaphoreCreateBinary();
     wifiSemaphoreConn = xSemaphoreCreateBinary();
 
@@ -103,5 +101,4 @@ void init_battery_mode()
       ESP_LOGI(LOW_MODE_TAG, "O timer me acordou!");
       // colocar logica de atualizacao dos estados via mqtt
   }
-
 }
