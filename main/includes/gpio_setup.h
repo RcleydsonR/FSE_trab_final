@@ -15,8 +15,9 @@
 #define ESP_LED_GPIO 2
 #define TRIGGER_GPIO 18
 #define ECHO_GPIO 19
-
-extern int led_state;
+// #define JOYSTICK_X ADC_CHANNEL_0
+// #define JOYSTICK_Y ADC_CHANNEL_3
+// #define JOYSTICK_BOTAO 34
 
 void adc_init();
 void adc_config_pin(adc_channel_t channel);

@@ -10,6 +10,7 @@
 #include "esp_sleep.h"
 #include "esp_log.h"
 #include "esp_timer.h"
+#include "freertos/semphr.h"
 
 #include "i2c.h"
 #include "lcd.h"
@@ -54,8 +55,8 @@ void init_energy_mode_components()
 
     pinMode(ESP_LED_GPIO, GPIO_OUTPUT);
 
-    // ultrasonic_init(&sensor);
-    // ESP_LOGI("HC-SR04", "SR04 Inicializado com sucesso");
+    ultrasonic_init(&sensor);
+    ESP_LOGI("HC-SR04", "SR04 Inicializado com sucesso");
 }
 
 void init_battery_mode()
