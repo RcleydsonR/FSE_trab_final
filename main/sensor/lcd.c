@@ -11,6 +11,7 @@
 #include "lcd.h"
 #include "morse.h"
 #include "buzzer.h"
+#include "mqtt.h"
 
 #define TAG "LCD"
 
@@ -97,14 +98,26 @@ void lcd_put_cur(int row, int col)
 
 void lcd_send_string(char *str, int sleep_time)
 {
+	char msg[180];
+	sprintf(msg, "{\"lcd_str\": \"%s\", \"morse_str\": \"", str);
+
 	while (*str) {
 		char c = *str++;
 		lcd_send_data (c);
-		convert_morse_to_sound(convert_char_to_morse(c));
-        if (*str)
+
+		char *morse_code = convert_char_to_morse(c);
+		convert_morse_to_sound(morse_code);
+		strcat(msg, morse_code);
+
+        if (*str) {
 			convert_morse_to_sound(" ");
+			strcat(msg, " ");
+		}
 		vTaskDelay(sleep_time / portTICK_PERIOD_MS);
 	}
+
+	strcat(msg, "\"}");
+	mqtt_send_message("v1/devices/me/attributes", msg);
 }
 
 void lcd_clear()

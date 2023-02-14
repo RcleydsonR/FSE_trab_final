@@ -53,7 +53,6 @@ void set_duty(int duty_value, char * telemetry_name)
 void dot()
 {
     set_duty(5000, TELEMETRY_NAME);
-    ESP_LOGI("BUZZER", ". acionado");
     vTaskDelay(DOT_DELAY / portTICK_PERIOD_MS);
     set_duty(0, TELEMETRY_NAME);
     vTaskDelay(50 / portTICK_PERIOD_MS);
@@ -62,7 +61,6 @@ void dot()
 void dash()
 {
     set_duty(5000, TELEMETRY_NAME);
-    ESP_LOGI("BUZZER", "- acionado");
     vTaskDelay(DASH_DELAY / portTICK_PERIOD_MS);
     set_duty(0, TELEMETRY_NAME);
     vTaskDelay(50 / portTICK_PERIOD_MS);
@@ -71,7 +69,6 @@ void dash()
 void space()
 {
     set_duty(0, TELEMETRY_NAME);
-    ESP_LOGI("BUZZER", "  acionado");
     vTaskDelay(SPACE_DELAY / portTICK_PERIOD_MS);
 }
 

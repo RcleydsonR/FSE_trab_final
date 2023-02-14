@@ -25,7 +25,7 @@ void app_main(void)
     xTaskCreate(&read_distance, "Ultrasonic HC-SR04", 2048, NULL, 5, NULL);
     xTaskCreate(&read_joystick, "Read Joystick", 2048, NULL, 1, NULL);
 #elif CONFIG_ESP_MODE_MORSE
-    xTaskCreate(&lcd_morse, "Display LCD", 2048, NULL, 1, NULL);
+    xTaskCreate(&lcd_morse, "Display LCD", 4096, NULL, 1, NULL);
 #elif CONFIG_ESP_MODE_TEMPERATURE
     xTaskCreate(&read_temperature, "Temperatura DHT11", 2048, NULL, 1, NULL);
 #endif
