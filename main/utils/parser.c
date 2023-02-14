@@ -10,6 +10,7 @@
 #include "cJSON.h"
 #include "gpio_setup.h"
 #include "joystick.h"
+#include "pwm.h"
 
 extern QueueHandle_t lcdQueue;
 extern int reverse_gear;
@@ -37,6 +38,10 @@ void handle_broker_message(char * json_message)
         char *str= cJSON_GetObjectItem(params, "lcd_str")->valuestring;
         if (strlen(str) <= 16)
             xQueueSend(lcdQueue, str, portMAX_DELAY);
+    }
+    else if (strcmp(command, "setPWM") == 0) {
+        int pwm = cJSON_GetObjectItem(json, "params")->valueint;
+        set_pwm_duty(pwm);
     }
     else if (strcmp(command, "acionarRe") == 0) {
         char reverse_gear_led[40];

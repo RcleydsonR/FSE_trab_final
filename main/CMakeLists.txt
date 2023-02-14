@@ -5,6 +5,7 @@ set(srcs
     "sensor/lcd.c"
     "sensor/i2c.c"
     "sensor/temperature_sensor.c"
+    "sensor/pwm.c"
     "service/mqtt.c"
     "service/wifi.c"
     "service/nvs.c"

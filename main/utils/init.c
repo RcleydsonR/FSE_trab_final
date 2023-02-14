@@ -20,6 +20,7 @@
 #include "buzzer.h"
 #include "gpio_setup.h"
 #include "wifi.h"
+#include "pwm.h"
 
 #define TAG "SENSOR_INIT"
 #define LOW_MODE_TAG "LOW_MODE"
@@ -57,8 +58,10 @@ void init_energy_mode_components()
     buzzer_init(33, 400);
     ESP_LOGI(TAG, "Buzzer Inicializado com sucesso");
 #elif CONFIG_ESP_MODE_TEMPERATURE
+    init_pwm();
+    ESP_LOGI(TAG, "LED_7_FLASH Inicializado com sucesso");
     DHT11_init(DHT11_GPIO);
-    ESP_LOGI("DHT11", "DHT11 Inicializado com sucesso");
+    ESP_LOGI(TAG, "DHT11 Inicializado com sucesso");
 #endif
 }
 
