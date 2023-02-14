@@ -59,7 +59,7 @@ void init_energy_mode_components()
 #if CONFIG_ESP_MODE_CAR
     ultrasonic_init(&sensor);
     ESP_LOGI("HC-SR04", "SR04 Inicializado com sucesso");
-    buzzer_init(21, 500);
+    buzzer_init(26, 500);
     ESP_LOGI(TAG, "Buzzer Inicializado com sucesso");
 #elif CONFIG_ESP_MODE_MORSE
     lcdQueue = xQueueCreate(4, 16);

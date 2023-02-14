@@ -32,11 +32,11 @@ void verifyCarDistance()
     mqtt_send_message("v1/devices/me/telemetry", distance_attribute);
 
     if(reverse_gear){
-        if(distance > 10.0 && distance <= 20.0){
+        if(distance > 15.0 && distance <= 30.0){
             set_duty(3500, TELEMETRY_BUZZER);
             ESP_LOGI(TAG, "Carro esta proximo de algo");
         }
-        if(distance <= 10.0){
+        if(distance <= 15){
             set_duty(5000, TELEMETRY_BUZZER);
             ESP_LOGI(TAG, "Carro muito proximo de algo, colisão iminente.");
         }

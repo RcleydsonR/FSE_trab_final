@@ -13,11 +13,8 @@
 #define ESP_BUTTON_GPIO 0
 #define DHT11_GPIO 5
 #define ESP_LED_GPIO 2
-#define TRIGGER_GPIO 18
-#define ECHO_GPIO 19
-// #define JOYSTICK_X ADC_CHANNEL_0
-// #define JOYSTICK_Y ADC_CHANNEL_3
-// #define JOYSTICK_BOTAO 34
+#define TRIGGER_GPIO 32
+#define ECHO_GPIO 33
 
 void adc_init();
 void adc_config_pin(adc_channel_t channel);

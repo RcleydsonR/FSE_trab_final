@@ -25,13 +25,12 @@ void read_joystick(void *params)
     
     while (true)
     {
-        printf("%d",JOYSTICK_BOTAO);
         x = analogRead(JOYSTICK_X);
         y = analogRead(JOYSTICK_Y);
         btn = digitalRead(JOYSTICK_BOTAO);
 
-        x = x - 1690;
-        y = y - 1730;
+        x = x - 1780;
+        y = y - 1740;
 
         if(btn == 0 && last_btn == 1){
             can_trigger_reverse_gear = !can_trigger_reverse_gear;
@@ -39,10 +38,12 @@ void read_joystick(void *params)
                 reverse_gear = 0;
         }
 
-        if(can_trigger_reverse_gear == 1 && y < -1500)
-                reverse_gear = 1;
+        if(can_trigger_reverse_gear == 1 && y < -900)
+            reverse_gear = 1;
+        
 
-        printf("Posição X: %.3d \t Posição Y: %.3d | Botão: %d\n", x, y, btn);
+
+        printf("pin = %d - Posição (X : %.3d, Y : %.3d) | btn: %d\n",JOYSTICK_BOTAO, x, y, btn);
         last_btn = btn;
         vTaskDelay(200 / portTICK_PERIOD_MS);
     }
