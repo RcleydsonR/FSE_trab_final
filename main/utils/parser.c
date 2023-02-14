@@ -7,11 +7,13 @@
 #include "freertos/queue.h"
 
 #include "mqtt.h"
+#include "init.h"
 #include "cJSON.h"
 #include "gpio_setup.h"
 #include "joystick.h"
 #include "pwm.h"
 
+extern struct status last_status;
 extern QueueHandle_t lcdQueue;
 extern int reverse_gear;
 extern int led_state;
@@ -30,6 +32,7 @@ void handle_broker_message(char * json_message)
         led_state = !led_state;
 
         sprintf(led, "{\"led\": %d}", led_state);
+        last_status.led_esp = led_state;
 
         digitalWrite(ESP_LED_GPIO, led_state);
         mqtt_send_message("v1/devices/me/attributes", led);

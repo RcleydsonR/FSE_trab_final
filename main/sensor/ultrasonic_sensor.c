@@ -15,6 +15,8 @@
 #define MAX_DISTANCE_CM 500 // 5m max
 #define TELEMETRY_BUZZER "Alarme de distância"
 
+extern struct status last_status;
+
 float distance;
 extern int reverse_gear;
 char reverse_gear_led[40];
@@ -22,6 +24,8 @@ char distance_attribute[40];
 
 void verifyCarDistance()
 {
+    last_status.reverse_gear = reverse_gear;
+    last_status.distance = distance;
     sprintf(reverse_gear_led, "{\"reverse_gear_led\": %d}", reverse_gear);
     sprintf(distance_attribute, "{\"Distância traseira\": %.2f}", distance);
     mqtt_send_message("v1/devices/me/attributes", reverse_gear_led);

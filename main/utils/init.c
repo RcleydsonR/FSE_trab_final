@@ -33,6 +33,15 @@ ultrasonic_sensor_t sensor = {
     .echo_pin = ECHO_GPIO
 };
 
+struct status last_status = {
+    .temperature = -1,
+    .humidity = -1,
+    .lcd_str = "",
+    .led_esp = -1,
+    .distance = -1,
+    .reverse_gear = -1
+};
+
 void init_energy_mode_components()
 {
     nvs_init();

@@ -9,6 +9,7 @@
 
 #include "i2c.h"
 #include "lcd.h"
+#include "init.h"
 #include "morse.h"
 #include "buzzer.h"
 #include "mqtt.h"
@@ -16,6 +17,7 @@
 #define TAG "LCD"
 
 extern QueueHandle_t lcdQueue;
+extern struct status last_status;
 
 void lcd_send_cmd(char cmd)
 {
@@ -100,6 +102,7 @@ void lcd_send_string(char *str, int sleep_time)
 {
 	char msg[180];
 	sprintf(msg, "{\"lcd_str\": \"%s\", \"morse_str\": \"", str);
+	strcpy(last_status.lcd_str, str);
 
 	while (*str) {
 		char c = *str++;

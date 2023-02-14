@@ -15,6 +15,7 @@
 #define TAG "DHT11"
 
 extern SemaphoreHandle_t mqttSemaphoreConn;
+extern struct status last_status;
 
 void read_temperature(void *params)
 {
@@ -26,6 +27,9 @@ void read_temperature(void *params)
         dht = DHT11_read();
 
         if (dht.status == DHT11_OK) {
+            last_status.temperature = dht.temperature;
+            last_status.humidity = dht.humidity;
+
             sprintf(message, "{\"Temperatura\": %d, \"Umidade\": %d}", dht.temperature, dht.humidity);
             ESP_LOGI(TAG, "{\"Temperatura\": %d, \"Umidade\": %d}", dht.temperature, dht.humidity);
 
