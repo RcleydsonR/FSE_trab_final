@@ -9,8 +9,13 @@
 #include "esp_log.h"
 
 #include "init.h"
+#include "lcd.h"
+#include "pwm.h"
+#include "gpio_setup.h"
+#include "mqtt.h"
 
 #define TAG "NVS"
+#define DIR "nvs_storage"
 
 static nvs_handle nvs_partition_handler;
 extern struct status last_status;
@@ -71,30 +76,49 @@ void nvs_write_str(char *dir, char *key, char *value)
     nvs_close(nvs_partition_handler);
 }
 
+void nvs_write_last_status()
+{
+    nvs_write_int(DIR, "temperature", last_status.temperature);
+    nvs_write_int(DIR, "humidity", last_status.humidity);
+    nvs_write_str(DIR, "lcd_str", last_status.lcd_str);
+    nvs_write_int(DIR, "led_esp", last_status.led_esp);
+    nvs_write_int(DIR, "led_pwm", last_status.led_pwm);
+    nvs_write_int(DIR, "distance", last_status.distance);
+    nvs_write_int(DIR, "reverse_gear", last_status.reverse_gear);
+    ESP_LOGI(TAG, "Escrito no nvs com sucesso");
+}
+
 void nvs_save_last_status(void *params)
 {
-    char *dir = "nvs_storage";
     while (1) {
-        nvs_write_int(dir, "temperature", last_status.temperature);
-        nvs_write_int(dir, "humidity", last_status.humidity);
-        nvs_write_str(dir, "lcd_str", last_status.lcd_str);
-        nvs_write_int(dir, "led_esp", last_status.led_esp);
-        nvs_write_int(dir, "distance", last_status.distance);
-        nvs_write_int(dir, "reverse_gear", last_status.reverse_gear);
-        ESP_LOGD(TAG, "Escrito no nvs com sucesso");
-        vTaskDelay(50000 / portTICK_PERIOD_MS);
+        nvs_write_last_status();
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 }
 
 void nvs_update_last_status()
 {
-    char *dir = "nvs_storage";
     size_t tam;
+    last_status.temperature = nvs_read_int(DIR, "temperature");
+    last_status.humidity = nvs_read_int(DIR, "humidity");
+    strcpy(last_status.lcd_str, nvs_read_str(DIR, "lcd_str", &tam));
+    last_status.led_esp = nvs_read_int(DIR, "led_esp");
+    last_status.led_pwm = nvs_read_int(DIR, "led_pwm");
+    last_status.distance = nvs_read_int(DIR, "distance");
+    last_status.reverse_gear = nvs_read_int(DIR, "reverse_gear");
 
-    last_status.temperature = nvs_read_int(dir, "temperature");
-    last_status.humidity = nvs_read_int(dir, "humidity");
-    strcpy(last_status.lcd_str, nvs_read_str(dir, "lcd_str", &tam));
-    last_status.led_esp = nvs_read_int(dir, "led_esp");
-    last_status.distance = nvs_read_int(dir, "distance");
-    last_status.reverse_gear = nvs_read_int(dir, "reverse_gear");
+    char mqtt_message[100];
+
+#if CONFIG_ESP_MODE_MORSE
+    lcd_send_string_silent(last_status.lcd_str);
+    sprintf(mqtt_message, "{\"lcd_str\": %s}", last_status.lcd_str);
+#elif CONFIG_ESP_MODE_TEMPERATURE
+    digitalWrite(ESP_LED_GPIO, last_status.led_esp);
+    sprintf(mqtt_message, "{\"led\": %d}", last_status.led_esp);
+    set_pwm_duty(last_status.led_pwm);
+#endif
+    ESP_LOGI(TAG, "Informacoes foram atualizadas.");
+#if CONFIG_ESP_ENERGY_MODE
+    mqtt_send_message("v1/devices/me/attributes", mqtt_message);
+#endif
 }

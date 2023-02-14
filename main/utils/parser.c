@@ -23,9 +23,6 @@ void handle_broker_message(char * json_message)
     cJSON *json = cJSON_Parse(json_message);
     char *command = cJSON_GetObjectItem(json, "method")->valuestring;
     cJSON *params= cJSON_GetObjectItemCaseSensitive(json, "params");
-
-    char *decoded_json = cJSON_Print(json);
-    ESP_LOGI("CJSON", "A mensagem json recebida é: %s", decoded_json);
     
     if (strcmp(command, "acionarLed") == 0) {
         char led[40];

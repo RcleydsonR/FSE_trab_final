@@ -21,7 +21,6 @@ void app_main(void)
 #if CONFIG_ESP_ENERGY_MODE
     ESP_LOGI(TAG, "Modo de energia ativado");
     init_energy_mode_components();
-    nvs_update_last_status();
     xTaskCreate(&wifi_connected, "Conexao wifi", 2048, NULL, 1, NULL);
     xTaskCreate(&nvs_save_last_status, "Salvar no nvs", 2048, NULL, 1, NULL);
 #if CONFIG_ESP_MODE_CAR
@@ -30,7 +29,7 @@ void app_main(void)
 #elif CONFIG_ESP_MODE_MORSE
     xTaskCreate(&lcd_morse, "Display LCD", 4096, NULL, 1, NULL);
 #elif CONFIG_ESP_MODE_TEMPERATURE
-    xTaskCreate(&read_temperature, "Temperatura DHT11", 2048, NULL, 1, NULL);
+    xTaskCreate(&update_temperature, "Temperatura DHT11", 2048, NULL, 1, NULL);
 #endif
 #else
     ESP_LOGI(TAG, "Modo de low power ativado");

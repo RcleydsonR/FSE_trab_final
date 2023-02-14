@@ -19,8 +19,10 @@
 #include "nvs.h"
 #include "buzzer.h"
 #include "gpio_setup.h"
+#include "temperature_sensor.h"
 #include "wifi.h"
 #include "pwm.h"
+#include "mqtt.h"
 
 #define TAG "SENSOR_INIT"
 #define LOW_MODE_TAG "LOW_MODE"
@@ -38,6 +40,7 @@ struct status last_status = {
     .humidity = -1,
     .lcd_str = "",
     .led_esp = -1,
+    .led_pwm = -1,
     .distance = -1,
     .reverse_gear = -1
 };
@@ -72,24 +75,34 @@ void init_energy_mode_components()
     DHT11_init(DHT11_GPIO);
     ESP_LOGI(TAG, "DHT11 Inicializado com sucesso");
 #endif
+    nvs_update_last_status();
 }
 
 void init_battery_mode()
 {
+  nvs_init();
+  ESP_LOGI("NVS", "NVS Inicializado com sucesso");
+  nvs_update_last_status();
+
   // Configuração da GPIO para o botão de entrada
   pinMode(ESP_BUTTON_GPIO, GPIO_INPUT);
-
+#if CONFIG_ESP_MODE_TEMPERATURE
+    DHT11_init(DHT11_GPIO);
+    ESP_LOGI(TAG, "DHT11 Inicializado com sucesso");
+#endif
   // Habilita o botão para acordar a placa
   gpio_wakeup_enable(ESP_BUTTON_GPIO, GPIO_INTR_LOW_LEVEL);
   esp_sleep_enable_gpio_wakeup();
 
   // Configurando o Sleep Timer (30s de sleep)
-  esp_sleep_enable_timer_wakeup(30 * SECOND_IN_MICROSECOND);
+  esp_sleep_enable_timer_wakeup(5 * SECOND_IN_MICROSECOND);
 
   int64_t time_before_sleep, time_after_sleep;
 
   while(1)
   {
+    read_temperature();
+    nvs_write_last_status();
     if (rtc_gpio_get_level(ESP_BUTTON_GPIO) == 0)
     {
       ESP_LOGI(LOW_MODE_TAG, "O botão da esp me acordou!");

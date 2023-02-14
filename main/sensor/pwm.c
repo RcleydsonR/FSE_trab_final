@@ -1,13 +1,18 @@
 #include <stdio.h>
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/ledc.h"
+
 #include "esp_err.h"
 #include "esp_log.h"
 
 #include "pwm.h"
+#include "init.h"
 
 #define LED_GPIO 19
+
+extern struct status last_status;
 
 void init_pwm()
 {
@@ -37,4 +42,5 @@ void set_pwm_duty(int duty)
 {
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+    last_status.led_pwm = duty;
 }

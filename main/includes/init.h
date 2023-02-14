@@ -9,6 +9,7 @@ struct status {
     int humidity;
     char lcd_str[80];
     int led_esp;
+    int led_pwm;
     int distance;
     int reverse_gear;
 };

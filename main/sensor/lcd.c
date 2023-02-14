@@ -98,6 +98,12 @@ void lcd_put_cur(int row, int col)
     lcd_send_cmd(col);
 }
 
+void lcd_send_string_silent(char *str)
+{
+	while (*str)
+		lcd_send_data (*str++);
+}
+
 void lcd_send_string(char *str, int sleep_time)
 {
 	char msg[180];
